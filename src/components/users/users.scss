@@ -1,0 +1,48 @@
+.delBtn {
+  cursor: pointer;
+}
+
+.pagBox {
+  display: flex;
+  margin-top: 10px;
+}
+.col{
+  margin: 15px 0 15px 0;
+}
+.fields{
+  outline: none;
+  padding: 10px;
+  border-radius: 5px;
+  width: 90%;
+  margin: 5px auto;
+  font-size: 18px;
+}
+.invalid-feedback{
+  color: maroon;
+  font-size: 18px;
+}
+
+.pagItem {
+  width: 21px;
+  height: 21px;
+  border: 1px solid #B28F53;
+  color: #de9415;
+  border-radius: 50%;
+  padding: 5px;
+  margin-left: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ActivePagItem {
+  background: #B28F53;
+  width: 23px;
+  height: 23px;
+  font-weight: bold;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  margin-left: 15px;
+  transition: .8s;
+  text-align: center;
+}
