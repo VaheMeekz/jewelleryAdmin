@@ -13,25 +13,6 @@ export const getHomeFooterThunk = () => {
     };
 };
 
-export const getAboutFooterThunk = () => {
-    return async (dispatch) => {
-        const response = await axios.get(`${baseUrl}/aboutFooter`);
-        dispatch({
-            type: GET_ABOUT_FOOTER,
-            payload: response.data[0],
-        });
-    };
-}
-
-export const getProductFooterThunk = () => {
-    return async (dispatch) => {
-        const response = await axios.get(`${baseUrl}/productFooter`);
-        dispatch({
-            type: GET_PRODUCT_FOOTER,
-            payload: response.data[0],
-        });
-    };
-}
 
 export const getDetailFooterThunk = () => {
     return async (dispatch) => {

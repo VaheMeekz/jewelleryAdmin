@@ -407,6 +407,13 @@ function ChildModal({id}) {
                         </div>
                         )
                     }
+                    <Box style={{
+                        marginTop:"50px"
+                    }}>
+                        <Button color="secondary" variant="contained" component="label" onClick={handleClose}>
+                           Close
+                        </Button>
+                    </Box>
                 </Box>
             </Modal>
         </React.Fragment>

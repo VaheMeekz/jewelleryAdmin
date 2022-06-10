@@ -10,7 +10,7 @@ export const contactUsReducer = (state = initialState, action) => {
     case GET_CONTACTS:
       return {
         ...state,
-        contacts: action.payload.contacts,
+        contacts: action.payload.posts,
         count:action.payload.count
       };
     default:

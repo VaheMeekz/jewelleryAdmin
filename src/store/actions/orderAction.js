@@ -4,7 +4,7 @@ import {GET_ORDERS} from "../types"
 
 export const getOrdersThunk = (offset, limit) => {
     return async (dispatch) => {
-      const response = await axios.get(`${baseUrl}/orders`, {
+      const response = await axios.get(`${baseUrl}/order`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

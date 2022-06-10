@@ -1,8 +1,6 @@
 import React, {useEffect} from 'react';
 import {Box} from "@mui/material";
 import HomeFooter from "../footerComponents/HomeFooter";
-import AboutFooter from "../footerComponents/AboutFooter";
-import ProductFooter from "../footerComponents/ProductFooter";
 import DetailFooter from "../footerComponents/DetailFooter";
 
 const Footer = () => {
@@ -15,11 +13,11 @@ const Footer = () => {
             <Box>
                 <hr style={{margin:"20px"}}/>
                 <HomeFooter/>
-                <hr style={{margin:"20px"}}/>
-                <AboutFooter/>
-                <hr style={{margin:"20px"}}/>
-                <ProductFooter/>
-                <hr style={{margin:"20px"}}/>
+                {/*<hr style={{margin:"20px"}}/>*/}
+                {/*<AboutFooter/>*/}
+                {/*<hr style={{margin:"20px"}}/>*/}
+                {/*<ProductFooter/>*/}
+                {/*<hr style={{margin:"20px"}}/>*/}
                 <DetailFooter/>
                 <hr style={{margin:"20px"}}/>
             </Box>

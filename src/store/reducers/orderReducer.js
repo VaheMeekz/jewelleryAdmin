@@ -10,7 +10,7 @@ export const orderReducer = (state = initialState, action) => {
       case GET_ORDERS:
           return {
               ...state,
-              orders:action.payload.orders,
+              orders:action.payload.posts,
               count:action.payload.count
           }
     default:

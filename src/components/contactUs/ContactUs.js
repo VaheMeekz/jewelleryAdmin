@@ -50,6 +50,8 @@ const ContactUs = () => {
     setOpen(false);
   };
 
+  console.log(data)
+
   const handleCloseDlete = () => {
     setOpenDelete(false);
   };

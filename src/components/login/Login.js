@@ -36,7 +36,6 @@ const Login = () => {
                 password:values.password
               })
               .then(function (response) {
-                console.log(response.data,"response.data")
                 if (response.data.error) {
                   Swal.fire({
                     icon: "error",
@@ -47,7 +46,7 @@ const Login = () => {
                   dispatch(thchangeAuAC(true));
                   localStorage.setItem('myToken',JSON.stringify(response.data.admin.token))
                   localStorage.setItem('email',JSON.stringify(response.data.admin.email))
-                  window.location.href='/users'
+                  window.location.href='/products'
                 }
               })
               .catch(function (error) {

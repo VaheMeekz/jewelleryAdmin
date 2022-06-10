@@ -72,8 +72,6 @@ const Admins = () => {
                         timer: 1500,
                     });
                     setOpen(false);
-                    // setData(response.data);
-                    // console.log(response.data);
                     setTimeout(() => {
                         window.location.reload(false);
                     }, 1000)
@@ -100,18 +98,18 @@ const Admins = () => {
                     <Table sx={{minWidth: 650}} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Name</TableCell>
+                                <TableCell align="left">#</TableCell>
                                 <TableCell align="left">Email</TableCell>
                                 <TableCell align="left">Delete</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data && data?.map((row) => (
+                            {data && data?.map((row, index) => (
                                 <TableRow
                                     key={row.id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                 >
-                                    <TableCell align="left">{row.name}</TableCell>
+                                    <TableCell align="left">{index + 1}</TableCell>
                                     <TableCell align="left">{row.email}</TableCell>
                                     <TableCell align="left">
                                         <Button color="secondary" variant="outlined" onClick={() => {
@@ -159,15 +157,11 @@ const Admins = () => {
                     <Box>
                         <Formik
                             initialValues={{
-                                firstName: '',
                                 email: '',
                                 password: '',
                                 confirmPassword: '',
                             }}
                             validationSchema={Yup.object().shape({
-
-                                firstName: Yup.string()
-                                    .required('First Name is required'),
                                 email: Yup.string()
                                     .email('Email is invalid')
                                     .required('Email is required'),
@@ -184,7 +178,6 @@ const Admins = () => {
                                     .post(
                                         `${baseUrl}/admin/create`,
                                         {
-                                            name: fields.firstName,
                                             email: fields.email,
                                             password: fields.password
                                         },
@@ -214,15 +207,6 @@ const Admins = () => {
                         >
                             {({errors, status, touched}) => (
                                 <Form>
-                                    <div className="form-row">
-                                        <Box className="form-group col-5" m={2}>
-                                            <h4 htmlFor="firstName">First Name</h4>
-                                            <Field name="firstName" type="text"
-                                                   className={'form-control fields' + (errors.firstName && touched.firstName ? ' is-invalid' : '')}/>
-                                            <ErrorMessage name="firstName" component="div"
-                                                          className="invalid-feedback"/>
-                                        </Box>
-                                    </div>
                                     <Box className="form-group" m={2}>
                                         <h4 htmlFor="email">Email</h4>
                                         <Field name="email" type="text"

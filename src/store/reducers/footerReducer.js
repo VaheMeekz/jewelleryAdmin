@@ -2,8 +2,6 @@ import {GET_ABOUT_FOOTER, GET_DETAIL_FOOTER, GET_HOME_FOOTER, GET_PRODUCT_FOOTER
 
 const initialState = {
     homeFooter: null,
-    aboutFooter:null,
-    productFooter:null,
     detailFooter:null
 };
 
@@ -14,16 +12,6 @@ export const footersReducer = (state = initialState, action) => {
                 ...state,
                 homeFooter: action.payload,
             };
-        case GET_ABOUT_FOOTER:
-            return {
-                ...state,
-                aboutFooter: action.payload
-            }
-        case GET_PRODUCT_FOOTER:
-            return {
-                ...state,
-                productFooter: action.payload
-            }
         case GET_DETAIL_FOOTER:
             return {
                 ...state,

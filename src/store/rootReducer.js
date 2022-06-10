@@ -14,6 +14,7 @@ import {footersReducer} from "./reducers/footerReducer";
 import {chooseReducer} from "./reducers/chooseReducer";
 import {jurisReducer} from "./reducers/jurisReducer";
 import {AdminReducer} from "./reducers/adminReducer";
+import {videoReducer} from "./reducers/videoReducer";
 
 export const rootReducer = combineReducers({
   isAuthReducer,
@@ -30,5 +31,6 @@ export const rootReducer = combineReducers({
   footersReducer,
   chooseReducer,
   jurisReducer,
-  AdminReducer
+  AdminReducer,
+  videoReducer
 });

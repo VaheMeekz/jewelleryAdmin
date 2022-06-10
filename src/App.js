@@ -27,6 +27,7 @@ function App() {
         setTimeout(() => {
             window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
         }, 100)
+        console.clear()
     }, [pathname]);
 
     useEffect(() => {

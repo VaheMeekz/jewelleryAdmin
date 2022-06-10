@@ -66,25 +66,28 @@ const HomeFooter = () => {
     const [subtiltleRu, setSubtitleRu] = useState("")
     const [subtiltleEn, setSubtitleEn] = useState("")
     const [image, setImage] = useState("")
-    const [open,setOPen] = useState(false)
+    const [open, setOPen] = useState(false)
     const [thisImg, setThisImg] = useState(null);
     const data = useSelector(state => state.footersReducer.homeFooter)
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     useEffect(() => {
         dispatch(getHomeFooterThunk())
+        console.clear()
+
     }, [])
 
     useEffect(() => {
         setTitleHy(data && data.titleHy)
         setTitleRu(data && data.titleRu)
         setTitleEn(data && data.titleEn)
-        setSubtitleHy(data && data.subTitleHy)
-        setSubtitleRu(data && data.subTitleRu)
-        setSubtitleEn(data && data.subTitleEn)
+        setSubtitleHy(data && data.textHy)
+        setSubtitleRu(data && data.textRu)
+        setSubtitleEn(data && data.textEn)
         setImage(data && data.image)
+        console.clear()
+
     }, [data])
 
     const handleChangeFooterTexts = () => {
@@ -92,7 +95,8 @@ const HomeFooter = () => {
             .post(
                 `${baseUrl}/homeFooter/edit`,
                 {
-                    titleHy,titleRu,titleEn,subTitleHy:subtiltleHy,subTitleRu:subtiltleRu,subTitleEn:subtiltleEn
+                    titleHy, titleRu, titleEn, textHy: subtiltleHy, textRu: subtiltleRu, textEn: subtiltleEn,
+                    image: thisImg
                 },
                 {
                     headers: {
@@ -143,38 +147,6 @@ const HomeFooter = () => {
             });
     };
 
-    const handleSubmit = () => {
-        axios
-            .post(
-                `${baseUrl}/homeFooter/editImage`,
-                {
-                    image:thisImg
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            )
-            .then(function (response) {
-                if (!response.data.error) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Succses",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    setOPen(false)
-                    setTimeout(() => {
-                        window.location.reload(false);
-                    }, 500);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
 
     return (
         <Box m={2}>
@@ -192,7 +164,7 @@ const HomeFooter = () => {
                     <TabPanel value={value} index={0}>
                         <div style={{margin: "10px 0 10px 0"}}>
                             <TextField id="outlined-basic" label="Title" variant="outlined" value={titleHy}
-                                       onChange={e=>setTitleHy(e.target.value)}/>
+                                       onChange={e => setTitleHy(e.target.value)}/>
                         </div>
                         <textarea
                             id="w3review"
@@ -209,7 +181,7 @@ const HomeFooter = () => {
                     <TabPanel value={value} index={1}>
                         <div style={{margin: "10px 0 10px 0"}}>
                             <TextField id="outlined-basic" label="Title" variant="outlined" value={titleRu}
-                                       onChange={e=>setTitleRu(e.target.value)}/>
+                                       onChange={e => setTitleRu(e.target.value)}/>
                         </div>
                         <textarea name="textHy"
                                   rows="4"
@@ -219,12 +191,13 @@ const HomeFooter = () => {
                                   cols="50"
                                   className="textareaText"
                                   value={subtiltleRu}
-                                    onChange={e=>setSubtitleRu(e.target.value)}
+                                  onChange={e => setSubtitleRu(e.target.value)}
                         />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
                         <div style={{margin: "10px 0 10px 0"}}>
-                            <TextField id="outlined-basic" label="Title"  onChange={e=>setTitleEn(e.target.value)} variant="outlined" value={titleEn}/>
+                            <TextField id="outlined-basic" label="Title" onChange={e => setTitleEn(e.target.value)}
+                                       variant="outlined" value={titleEn}/>
                         </div>
                         <textarea name="textHy"
                                   rows="4"
@@ -234,14 +207,25 @@ const HomeFooter = () => {
                                   cols="50"
                                   className="textareaText"
                                   value={subtiltleEn}
-                                  onChange={e=>setSubtitleEn(e.target.value)}
+                                  onChange={e => setSubtitleEn(e.target.value)}
                         />
                     </TabPanel>
-                    <Button  color="secondary" style={{margin:"20px"}} variant="contained" onClick={handleChangeFooterTexts}>Submit</Button>
-                    <Box m={2}>
-                        <img src={image} width={300}/>
-                        <Button color="secondary" style={{margin:"-15px 0 20px 20px" }} onClick={() => setOPen(true)} variant="contained">Edit</Button>
+
+                    <Box>
+                        {
+                            thisImg == null ? (
+                                <div>
+                                    <img src={image} width={300}/>
+                                    <Button color="secondary" style={{margin: "-15px 0 20px 20px"}}
+                                            onClick={() => setOPen(true)} variant="contained">Edit</Button>
+                                </div>
+                            ) : (
+                                <img src={thisImg} alt="image"/>
+                            )
+                        }
                     </Box>
+                    <Button color="secondary" style={{margin: "20px"}} variant="contained"
+                            onClick={handleChangeFooterTexts}>Submit</Button>
                 </Box>
             </Box>
             <Modal
@@ -258,27 +242,28 @@ const HomeFooter = () => {
                         <div className="imageArea">
                             <div>
                                 <div className="uploadBtns">
-                                    <Button  color="secondary"variant="contained" component="label">
+                                    <Button color="secondary" variant="contained" component="label">
                                         Upload
-                                        <input type="file" hidden multiple onChange={handleFile} />
+                                        <input type="file" hidden multiple onChange={handleFile}/>
                                     </Button>
                                 </div>
                                 <div className="uploadBtns" m={2}>
-                                    {thisImg == null ? null : <Button  color="secondary" variant="contained" onClick={handleSubmit}>
-                                        Submit
-                                    </Button>}
+                                    {thisImg == null ? null :
+                                        <Button color="secondary" variant="contained" onClick={() => setOPen(false)}>
+                                            Submit
+                                        </Button>}
 
                                 </div>
                             </div>
                             <div className="uploadImageAreaInModal">
                                 {thisImg !== null && (
-                                    <img src={thisImg} alt="newImage" width={300} height={200} />
+                                    <img src={thisImg} alt="newImage" width={300} height={200}/>
                                 )}
                             </div>
                         </div>
                     </Box>
                     <DialogActions>
-                        <Button  color="secondary" variant="contained" onClick={() => setOPen(false)}>Close</Button>
+                        <Button color="secondary" variant="contained" onClick={() => setOPen(false)}>Close</Button>
                         {/*<Button variant="contained" onClick={handleDelete}>Yes</Button>*/}
                     </DialogActions>
                 </Box>

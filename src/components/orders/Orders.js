@@ -43,7 +43,7 @@ function Row(props) {
     const handleDelete = () => {
         axios
             .post(
-                `${baseUrl}/basket/delete-admin`,
+                `${baseUrl}/order/delete`,
                 {
                     id: currentId,
                 },
@@ -87,8 +87,9 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.id}
                 </TableCell>
-                <TableCell align="left">{row.User?.name}</TableCell>
-                <TableCell align="left">{row.User?.email}</TableCell>
+                <TableCell align="left">{row.name}</TableCell>
+                <TableCell align="left">{row.phone}</TableCell>
+                <TableCell align="left">{row.text}</TableCell>
                 <TableCell align="left">
                     <DeleteIcon
                         onClick={() => {
@@ -110,9 +111,7 @@ function Row(props) {
                                     <TableRow>
                                         <TableCell align="left">Image</TableCell>
                                         <TableCell align="left">Name</TableCell>
-                                        <TableCell align="left">Model</TableCell>
-                                        <TableCell align="left">Price</TableCell>
-                                        <TableCell align="left">Quantity</TableCell>
+                                        <TableCell align="left">Description</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -120,7 +119,7 @@ function Row(props) {
                                     <TableRow>
                                         <TableCell component="th" scope="row">
                                             <img
-                                                src={row.Product && row.Product.image.split(",")[0]}
+                                                src={row.Product && row.Product?.ProductImages[0]?.image}
                                                 alt="image"
                                                 width={100}
                                                 height={80}
@@ -129,8 +128,7 @@ function Row(props) {
                                         <TableCell component="th" scope="row">
                                             {row.Product?.nameHy}
                                         </TableCell>
-                                        <TableCell>{row.Product?.model}</TableCell>
-                                        <TableCell align="left">{row.Product?.price}</TableCell>
+                                        <TableCell align="left">{row.Product?.descriptionHy}</TableCell>
                                         <TableCell align="left">{row.quantity}</TableCell>
                                     </TableRow>
                                     {/* ))} */}
@@ -151,10 +149,10 @@ function Row(props) {
                         Delate ?
                     </Typography>
                     <DialogActions>
-                        <Button variant="contained" onClick={() => setOpenModal(false)}>
+                        <Button variant="contained" color="error" onClick={() => setOpenModal(false)}>
                             No
                         </Button>
-                        <Button variant="contained" onClick={handleDelete} autoFocus>
+                        <Button variant="contained" color="secondary" onClick={handleDelete} autoFocus>
                             Yes
                         </Button>
                     </DialogActions>
@@ -174,6 +172,7 @@ const Orders = () => {
 
     useEffect(() => {
         dispatch(getOrdersThunk(page, limit));
+        console.clear()
     }, [page, limit]);
 
     useEffect(() => {
@@ -181,7 +180,6 @@ const Orders = () => {
             setPages(makeArray(Math.ceil(count / limit)));
         }
     }, [count, limit]);
-
     return (
         <Box m={3} className="boxHeigth">
             <h2 t={3} mb={3}>
@@ -193,8 +191,9 @@ const Orders = () => {
                         <TableRow>
                             <TableCell/>
                             <TableCell align="left">#</TableCell>
-                            <TableCell align="left">f Name</TableCell>
-                            <TableCell align="left">Email</TableCell>
+                            <TableCell align="left">Name</TableCell>
+                            <TableCell align="left">Phone</TableCell>
+                            <TableCell align="left">Message</TableCell>
                             <TableCell align="left">Delete</TableCell>
                         </TableRow>
                     </TableHead>

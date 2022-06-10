@@ -1,20 +1,13 @@
-import React, {useEffect, useState} from "react";
-import PropTypes from "prop-types";
+import React, {useEffect, useState} from 'react';
+import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import {Button} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    getAboutUsInfoThunk,
-    getAboutUsThunk,
-} from "../../store/actions/aboutUsAction";
-import "./aboutUs.scss";
-import {baseUrl, token} from "../../config/config";
+import Typography from "@mui/material/Typography";
+import PropTypes from "prop-types";
 import axios from "axios";
+import {baseUrl, token} from "../../config/config";
 import Swal from "sweetalert2";
-import AboutUsDown from "./AboutUsDown";
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -49,34 +42,25 @@ function a11yProps(index) {
     };
 }
 
-
-const AboutUs = () => {
-    const dispatch = useDispatch();
-    const aboutUsData = useSelector((state) => state?.aboutUsReducer.aboutUs);
-    const aboutUsInfo = useSelector((state) => state.aboutUsReducer.aboutUsInfo);
+const AboutUsDown = ({data}) => {
     const [value, setValue] = React.useState(0);
     const [imageOne, setImageOne] = useState(null)
     const [imageTwo, setImageTwo] = useState(null)
-    const [thisImg, setThisImg] = useState(null);
+    const [imageThree, setImageThree] = useState(null)
     //values
     const [subTitleHy, setSubTitleHy] = useState("");
     const [subTitleRu, setSubTitleRu] = useState("");
     const [subTitleEn, setSubTitleEn] = useState("");
     //
-    useEffect(() => {
-        dispatch(getAboutUsThunk());
-        dispatch(getAboutUsInfoThunk());
-        console.clear()
-    }, []);
 
     useEffect(() => {
-        setSubTitleHy(aboutUsData && aboutUsData.textHy);
-        setSubTitleRu(aboutUsData && aboutUsData.textRu);
-        setSubTitleEn(aboutUsData && aboutUsData.textEn);
-        setImageOne(aboutUsData && aboutUsData.imgOne);
-        setImageTwo(aboutUsData && aboutUsData.imgTwo);
-        console.clear()
-    }, [aboutUsData, aboutUsInfo]);
+        setSubTitleHy(data && data.textHy);
+        setSubTitleRu(data && data.textRu);
+        setSubTitleEn(data && data.textEn);
+        setImageOne(data && data.imgOne);
+        setImageTwo(data && data.imgTwo);
+        setImageThree(data && data.imgThree);
+    }, [data]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -86,13 +70,14 @@ const AboutUs = () => {
     const handleSubmit = () => {
         axios
             .post(
-                `${baseUrl}/aboutUs/editUp`,
+                `${baseUrl}/aboutUs/editDown`,
                 {
                     textHy: subTitleHy,
                     textEn: subTitleEn,
                     textRu: subTitleRu,
                     imgOne: imageOne,
-                    imgTwo: imageTwo
+                    imgTwo: imageTwo,
+                    imgThree: imageThree
                 },
                 {
                     headers: {
@@ -161,13 +146,33 @@ const AboutUs = () => {
             });
     };
 
+    const handleFileThree = (e) => {
+        let files = [];
+        Object.keys(e.target.files).map((f) => {
+            if (f === "Length") return;
+            files.push(e.target.files[0]);
+        });
+        uploadImageThree(files);
+    };
+
+    let arrOfImagesThree = [];
+    const uploadImageThree = (files) => {
+        const formData = new FormData();
+        formData.append("file", files[0]);
+        formData.append("upload_preset", "armcodingImage");
+        formData.append("cloud_name", "armcoding");
+        axios
+            .post(`https://api.cloudinary.com/v1_1/armcoding/image/upload`, formData)
+            .then((res) => {
+                arrOfImagesThree.push(res.data.url);
+                setImageThree(res.data.url);
+            });
+    };
+
     return (
-        <Box m={3} className="boxHeigth">
+        <div>
             <h2 mt={3} mb={3}>
-                About Us Settings
-            </h2>
-            <h2 mt={3} mb={3}>
-                Up
+                Down
             </h2>
             <Box sx={{width: "100%"}}>
                 <Box sx={{borderBottom: 1, borderColor: "divider"}}>
@@ -197,7 +202,7 @@ const AboutUs = () => {
                         onChange={(e) => setSubTitleHy(e.target.value)}
                         maxLength="600"
                         cols="60"
-                        defaultValue={aboutUsData.length == 0 ? null : aboutUsData.textHy}
+                        defaultValue={data?.length == 0 ? null : data?.textHy}
                         className="textareaText"
                     />
                 </TabPanel>
@@ -215,7 +220,7 @@ const AboutUs = () => {
                         value={subTitleRu}
                         onChange={(e) => setSubTitleRu(e.target.value)}
                         maxLength="600"
-                        defaultValue={aboutUsData.length == 0 ? null : aboutUsData.textRu}
+                        defaultValue={data?.length == 0 ? null : data?.textRu}
                         cols="60"
                         className="textareaText"
                     />
@@ -233,7 +238,7 @@ const AboutUs = () => {
                         onChange={(e) => setSubTitleEn(e.target.value)}
                         rows="8"
                         maxLength="600"
-                        defaultValue={aboutUsData.length == 0 ? null : aboutUsData.textEn}
+                        defaultValue={data?.length == 0 ? null : data?.textEn}
                         cols="60"
                         className="textareaText"
                     />
@@ -269,12 +274,26 @@ const AboutUs = () => {
                     )
                 }
             </Box>
+            <Box m={2}>
+                {
+                    imageThree !== null && (
+                        <div>
+                            <img src={imageThree} alt="one" style={{width: "150px", height: "150px"}}/>
+                            <Button color="secondary" variant="contained" component="label" style={{
+                                margin: "0 17px 35px 43px"
+                            }}>
+                                Edit
+                                <input type="file" hidden multiple onChange={handleFileThree}/>
+                            </Button>
+                        </div>
+                    )
+                }
+            </Box>
             <Button color="secondary" variant="contained" onClick={handleSubmit}>
                 Submit
             </Button>
-            <AboutUsDown data={aboutUsInfo[0]}/>
-        </Box>
+        </div>
     );
 };
 
-export default AboutUs;
+export default AboutUsDown;

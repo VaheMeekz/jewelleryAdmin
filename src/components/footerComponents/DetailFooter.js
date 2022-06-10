@@ -76,15 +76,16 @@ const DetailFooter = () => {
     useEffect(() => {
         dispatch(getDetailFooterThunk())
     }, [])
-
     useEffect(() => {
         setTitleHy(data && data.titleHy)
         setTitleRu(data && data.titleRu)
         setTitleEn(data && data.titleEn)
-        setSubtitleHy(data && data.subTitleHy)
-        setSubtitleRu(data && data.subTitleRu)
-        setSubtitleEn(data && data.subTitleEn)
+        setSubtitleHy(data && data.textHy)
+        setSubtitleRu(data && data.textRu)
+        setSubtitleEn(data && data.textEn)
         setImage(data && data.image)
+        console.clear()
+
     }, [data])
 
     const handleChangeFooterTexts = () => {
@@ -92,7 +93,8 @@ const DetailFooter = () => {
             .post(
                 `${baseUrl}/detailFooter/edit`,
                 {
-                    titleHy, titleRu, titleEn, subTitleHy: subtiltleHy, subTitleRu: subtiltleRu, subTitleEn: subtiltleEn
+                    titleHy, titleRu, titleEn, textHy: subtiltleHy, textRu: subtiltleRu, textEn: subtiltleEn,
+                    image: thisImg,
                 },
                 {
                     headers: {
@@ -142,40 +144,6 @@ const DetailFooter = () => {
                 setThisImg(res.data.url);
             });
     };
-
-    const handleSubmit = () => {
-        axios
-            .post(
-                `${baseUrl}/detailFooter/editImage`,
-                {
-                    image: thisImg
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            )
-            .then(function (response) {
-                if (!response.data.error) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Succses",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                    setOPen(false)
-                    setTimeout(() => {
-                        window.location.reload(false);
-                    }, 500);
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
     return (
         <Box m={2}>
             <h3 mt={3} mb={3}>Product detail page footer settings</h3>
@@ -238,13 +206,22 @@ const DetailFooter = () => {
                                   onChange={e => setSubtitleEn(e.target.value)}
                         />
                     </TabPanel>
-                    <Button  color="secondary" color="secondary" style={{margin: "20px"}} variant="contained"
-                            onClick={handleChangeFooterTexts}>Submit</Button>
+
                     <Box m={2}>
-                        <img src={image} width={300}/>
-                        <Button color="secondary" style={{margin: "-15px 0 20px 20px"}} onClick={() => setOPen(true)}
-                                variant="contained">Edit</Button>
+                        {
+                            thisImg == null ? (<div>
+                                <img src={image} width={300}/>
+                                <Button color="secondary" style={{margin: "-15px 0 20px 20px"}}
+                                        onClick={() => setOPen(true)}
+                                        variant="contained">Edit</Button>
+                            </div>) : (
+                                <img src={thisImg} width={300}/>
+                            )
+                        }
+
                     </Box>
+                    <Button color="secondary" color="secondary" style={{margin: "20px"}} variant="contained"
+                            onClick={handleChangeFooterTexts}>Submit</Button>
                 </Box>
             </Box>
             <Modal
@@ -267,9 +244,10 @@ const DetailFooter = () => {
                                     </Button>
                                 </div>
                                 <div className="uploadBtns" m={2}>
-                                    {thisImg == null ? null : <Button color="secondary" variant="contained" onClick={handleSubmit}>
-                                        Submit
-                                    </Button>}
+                                    {thisImg == null ? null :
+                                        <Button color="secondary" variant="contained" onClick={() => setOPen(false)}>
+                                            Submit
+                                        </Button>}
 
                                 </div>
                             </div>
@@ -281,7 +259,7 @@ const DetailFooter = () => {
                         </div>
                     </Box>
                     <DialogActions>
-                        <Button  color="secondary" variant="contained" onClick={() => setOPen(false)}>Close</Button>
+                        <Button color="secondary" variant="contained" onClick={() => setOPen(false)}>Close</Button>
                         {/*<Button variant="contained" onClick={handleDelete}>Yes</Button>*/}
                     </DialogActions>
                 </Box>
