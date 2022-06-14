@@ -72,6 +72,7 @@ const ProductAddModal = ({openAdd, setOpenAdd, categories}) => {
                 icon: "error", title: "Oops...", text: "Images is mutch!( նկարները 5֊ից ոչ շատ)",
             });
         }
+        console.clear()
     }, [thisImg]);
 
     //file upload start
@@ -255,7 +256,7 @@ const ProductAddModal = ({openAdd, setOpenAdd, categories}) => {
                     <TextField label="Video URL" variant="outlined" value={video}
                                onChange={e => setVideo(e.target.value)} fullWidth/>
                 </Box>
-                <Box>
+                <Box>  
                     <div className="uploadBtns">
                         <Button color="secondary" variant="contained" component="label">
                             Upload Image

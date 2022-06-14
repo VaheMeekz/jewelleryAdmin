@@ -97,7 +97,7 @@ const Category = () => {
                     setCategorys(response.data);
                 }
             })
-            .catch(function (error) {
+            .catch(function (error) {   
                 console.log(error);
             });
     };
