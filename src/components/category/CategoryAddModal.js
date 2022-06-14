@@ -10,6 +10,29 @@ const CategoryAddModal = ({openAdd,handleCloseAdd,style,setOpenAdd,setCategorys}
     const [nameHy, setNameHy] = useState("");
     const [nameRu, setNameRu] = useState("");
     const [nameEn, setNameEn] = useState("");
+    const [image,setImage] = useState(null)
+
+    const handleFile = (e) => {
+        let files = [];
+        Object.keys(e.target.files).map((f) => {
+            if (f === "Length") return;
+            files.push(e.target.files[0]);
+        });
+        uploadImage(files);
+    };
+    let arrOfImages = [];
+
+    const uploadImage = (files) => {
+        const formData = new FormData();
+        formData.append("file", files[0]);
+        formData.append("upload_preset", "armcodingImage");
+        formData.append("cloud_name", "armcoding");
+        axios
+            .post(`https://api.cloudinary.com/v1_1/armcoding/image/upload`, formData)
+            .then((res) => {
+                setImage(res.data.url);
+            });
+    };
     const handleAdd = () => {
         axios
             .post(
@@ -18,6 +41,7 @@ const CategoryAddModal = ({openAdd,handleCloseAdd,style,setOpenAdd,setCategorys}
                     nameHy,
                     nameRu,
                     nameEn,
+                    image
                 },
                 {
                     headers: {
@@ -76,6 +100,23 @@ const CategoryAddModal = ({openAdd,handleCloseAdd,style,setOpenAdd,setCategorys}
                         value={nameEn}
                         onChange={(e) => setNameEn(e.target.value)}
                     />
+                    <div>
+                    <Button color="secondary" variant="contained" component="label">
+                          {image ? "Change Image" : "Upload Image"}  
+                            <input type="file" hidden multiple onChange={handleFile}/>
+                        </Button>
+                    </div>
+
+                    <div>
+                        {
+                            image ? (
+                                <img src={image} alt="image" style={{
+                                    width:"150px",
+                                    height:"150px"
+                                }}/>
+                            ) : null
+                        }
+                    </div>
                 </Typography>
                 <Typography
                     className="btnsBox"

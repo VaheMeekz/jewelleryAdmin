@@ -47,6 +47,7 @@ const Category = () => {
     const [nameEditHy, setNameEditHy] = useState("");
     const [nameEditRu, setNameEditRu] = useState("");
     const [nameEditEn, setNameEditEn] = useState("");
+    const [editImage,setEditImage] = useState("")
 
     useEffect(() => {
         dispatch(getCategoryThunk());
@@ -55,6 +56,28 @@ const Category = () => {
     useEffect(() => {
         setCategorys(data);
     }, [data]);
+
+    const handleFile = (e) => {
+        let files = [];
+        Object.keys(e.target.files).map((f) => {
+            if (f === "Length") return;
+            files.push(e.target.files[0]);
+        });
+        uploadImage(files);
+    };
+    let arrOfImages = [];
+
+    const uploadImage = (files) => {
+        const formData = new FormData();
+        formData.append("file", files[0]);
+        formData.append("upload_preset", "armcodingImage");
+        formData.append("cloud_name", "armcoding");
+        axios
+            .post(`https://api.cloudinary.com/v1_1/armcoding/image/upload`, formData)
+            .then((res) => {
+                setEditImage(res.data.url);
+            });
+    };
 
     const handelDelete = () => {
         axios
@@ -82,7 +105,7 @@ const Category = () => {
     const handleEdit = () => {
         axios
             .post(`${baseUrl}/category/edit`, {
-                id: currentId, nameHy: nameEditHy, nameRu: nameEditRu, nameEn: nameEditEn,
+                id: currentId, nameHy: nameEditHy, nameRu: nameEditRu, nameEn: nameEditEn,image:editImage
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -118,6 +141,7 @@ const Category = () => {
                             <TableCell align="left">Name Hy</TableCell>
                             <TableCell align="left">Name Ru</TableCell>
                             <TableCell align="left">Name En</TableCell>
+                            <TableCell align="left">Image</TableCell>
                             <TableCell align="left">Edit</TableCell>
                             <TableCell align="left">Delete</TableCell>
                         </TableRow>
@@ -132,6 +156,12 @@ const Category = () => {
                             </TableCell>
                             <TableCell align="left">{row.nameRu}</TableCell>
                             <TableCell align="left">{row.nameEn}</TableCell>
+                            <TableCell align="left">{row.image ? (
+                                <img src={row.image} alt="image" style={{
+                                    width:"150px",
+                                    height:"150px"
+                                }}/>
+                            ):"-"}</TableCell>
                             <TableCell align="left"> <Button color="secondary"
                                                              variant="contained"
                                                              onClick={() => {
@@ -140,6 +170,7 @@ const Category = () => {
                                                                  setNameEditHy(row.nameHy);
                                                                  setNameEditRu(row.nameRu);
                                                                  setNameEditEn(row.nameEn);
+                                                                 setEditImage(row.image)
                                                              }}
                             >
                                 Edit
@@ -190,6 +221,25 @@ const Category = () => {
                             value={nameEditEn}
                             onChange={(e) => setNameEditEn(e.target.value)}
                         />
+                        <div>
+                            {
+                                editImage && (
+                                    <div>
+                                    <img src={editImage} alt="image" style={{
+                                        width:"150px",
+                                        height:"150px"
+                                    }}/>
+                                     <Button color="secondary" variant="contained" component="label" style={{
+                                        margin:"20px"
+                                    }}>
+                          {editImage ? "Change Image" : "Upload Image"}  
+                            <input type="file" hidden multiple onChange={handleFile}/>
+                        </Button>
+                                
+                                    </div>
+                                )
+                            }
+                        </div>
                     </Typography>
                     <Typography id="modal-modal-description" sx={{mt: 2}}>
                         <Button color="secondary" variant="contained" onClick={handleEdit}>Submit</Button>

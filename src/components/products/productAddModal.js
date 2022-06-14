@@ -274,7 +274,7 @@ const ProductAddModal = ({openAdd, setOpenAdd, categories}) => {
                                         height={100}
                                         style={{margin: "10px"}}
                                     />
-                                    <Button variant="outlined" color="error" color="secondary"
+                                    <Button variant="outlined" color="secondary"
                                             onClick={() => handleDeleteUploadedImage(index)}>Delete This
                                         Image</Button>
                                 </div>
