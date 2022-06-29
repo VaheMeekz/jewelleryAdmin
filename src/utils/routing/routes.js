@@ -17,9 +17,9 @@ import {
     INFO_PAGE, JURISPRUDECE_PAGE,
     LOGIN_PAGE,
     NOTFOUND_PAGE,
-    ORDERS_PAGE,
+    ORDERS_PAGE, PORTFOLIO_IMAGE, PORTFOLIO_VIDEOS,
     PRODUCT_PAGE,
-    SUBSCRIBERS_PAGE,
+    SUBSCRIBERS_PAGE, TEXT_PAGE,
     USERS_PAGE, VIDEOS_PAGE,
 } from "./urls";
 import Delevery from "../../components/delevery/Delevery";
@@ -39,6 +39,9 @@ import Admins from "../../components/admins/Admins";
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import Videos from "../../components/videos/Videos";
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import Text from "../../components/text/Text";
+import Image from "../../components/Images/Image";
+import PortfolioVideos from "../../components/portfolioVideos/PortfolioVideos";
 export const isAuthPages = [
     {id: 2, path: PRODUCT_PAGE, name: "Products", Component: Products,icon:<DashboardIcon/>},
     {id: 8, path: CATEGORY_PAGE, name: "Category", Component: Category,icon:<CategoryIcon/>},
@@ -50,17 +53,14 @@ export const isAuthPages = [
     {id: 4, path: CONTACTS_PAGE, name: "Contact Us", Component: ContactUs,icon:<InfoIcon/>},
     {id: 5, path: SUBSCRIBERS_PAGE, name: "Subscribers", Component: Subscribers,icon:<GroupIcon/>},
     {id: 7, path: INFO_PAGE, name: "Info", Component: Info,icon:<InfoIcon/>},
+    {id:131,path: TEXT_PAGE,name:"Product Page",Component:Text,icon: <InfoIcon/>},
+    {id:13123,path: PORTFOLIO_IMAGE,name:"Images",Component:Image,icon: <InsertPhotoIcon/>},
+    {id:13123,path: PORTFOLIO_VIDEOS,name:"Portfolio Videos",Component:PortfolioVideos,icon: <VideoLibraryIcon/>},
     {id:13,path: ADMIN_PAGE,name:"Admins",Component:Admins,icon: <AutoFixHighIcon/>}
 ];
-// {id: 1, path: USERS_PAGE, name: "Users", Component: Users,icon:<GroupIcon/>},
-// {id: 10, path: DELEVERY_PAGE, name: "Delivery", Component: Delevery,icon:<ElectricCarIcon/>},
-// {id: 12, path: CHOOSE_PAGE, name: "Choose", Component: Choose,icon:<BuildIcon/>},
-// {id: 3, path: JURISPRUDECE_PAGE, name: "Jurisrudece", Component: Jurisrudece,icon:<DashboardIcon/>},
 
 export const isntAuthPages = [
     {id: 1, path: LOGIN_PAGE, name: "Login", Component: Login,icon:<LockOpenIcon/>},
 ];
 
-export const notFoundPages = [
-    {id: 1, path: NOTFOUND_PAGE, name: "404", Component: NotFound},
-];
+

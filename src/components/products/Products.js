@@ -23,6 +23,10 @@ import "../aboutUs/aboutUs.scss";
 import ProductDelteModal from "./productDelteModal";
 import ProductAddModal from "./productAddModal";
 import ProductEditModal from "./productEditModal";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 const Products = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.productReducer.products);
@@ -37,10 +41,14 @@ const Products = () => {
     const [page, setPage] = useState(0);
     const [pages, setPages] = useState([]);
     const [row,setRow] = useState(null)
+    const [age, setAge] = React.useState('');
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
     const [search, setSearch] = useState()
         useEffect(() => {
-        dispatch(getProductsThunk(page, limit, search));
-    }, [page, limit, search]);
+        dispatch(getProductsThunk(page, limit, search,age));
+    }, [page, limit, search,age]);
 
     useEffect(() => {
         dispatch(getCategoryThunk());
@@ -74,6 +82,24 @@ const Products = () => {
         <Box style={{margin: "10px"}}>
             <h4>Search</h4>
             <TextField placeholder="Search" value={search} onChange={e => setSearch(e.target.value)}/>
+        </Box>
+        <Box style={{margin: "10px"}}>
+            <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="Category"
+                    onChange={handleChange}
+                >
+                    {
+                        categories?.map(i=>{
+                            return <MenuItem value={i.id}>{i.nameHy}</MenuItem>
+                        })
+                    }
+                </Select>
+            </FormControl>
         </Box>
         <hr/>
         <Box m={2}>
